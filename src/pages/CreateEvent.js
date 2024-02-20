@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import api from "./api";
+import api from "../components/api";
 
 const CreateEvent = () => {
   const navigate = useNavigate();
@@ -17,17 +17,20 @@ const CreateEvent = () => {
 
   const handleAddEvent = async (e) => {
     e.preventDefault();
+    //print client-side errors
     if (!validateInputs()) {
       return;
     }
 
     try {
       const response = await api.post("create-event", formData);
+      console.log("API response:", response);
       navigate("/");
     } catch (error) {
+      console.error("Error creating event:", error);
       if (error.response && error.response.status === 400) {
         setErrors(error.response.data.errors);
-        //console.log("Error response from server:", error.response.data.errors);
+        console.log("Error response from server:", error.response.data.errors);
       } else {
         console.error("Error creating event:", error);
       }
@@ -44,14 +47,14 @@ const CreateEvent = () => {
   const validateInputs = () => {
     let newErrors = {};
     //nom validation
-    if (!formData.nom) {
+    if (formData.nom === "") {
       newErrors.nom = "Ce champ est obligatoire";
     }
     if (formData.nom.length < 3 || formData.nom.length > 100) {
       newErrors.nom = "Le nom doit être entre 3 et 100 caractères";
     }
     //description validation
-    if (!formData.description) {
+    if (formData.description === "") {
       newErrors.description = "Ce champ est obligatoire";
     }
     if (formData.description.length < 10 || formData.description.length > 500) {
@@ -59,7 +62,7 @@ const CreateEvent = () => {
         "Champ doit être de longueur comprise entre 10 et 500 caractères";
     }
     //date validation
-    if (!formData.jour) {
+    if (formData.jour === "") {
       newErrors.jour = "Ce champ est obligatoire";
     }
     const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
@@ -68,16 +71,15 @@ const CreateEvent = () => {
         "Format de date non valide. Utilisez le format jj/mm/aaaa.";
     }
     //temps validation
-    if (!formData.temps) {
+    if (formData.temps === "") {
       newErrors.temps = "Ce champ est obligatoire";
     }
     const tempsRegex = /^\d{2}:\d{2}$/;
     if (!tempsRegex.test(formData.temps)) {
-      newErrors.temps =
-        "Format de date non valide. Utilisez le format jj/mm/aaaa.";
+      newErrors.temps = "Format d'heure non valide. Utilisez le format HH:mm.";
     }
     //lieu validation
-    if (!formData.lieu) {
+    if (formData.lieu === "") {
       newErrors.lieu = "Ce champ est obligatoire";
     }
 

@@ -5,7 +5,7 @@ import "bootswatch/dist/lux/bootstrap.min.css";
 import EventsList from "./components/EventsList";
 import EventDetails from "./components/EventDetails";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import CreateEvent from "./components/CreateEvent";
+import CreateEvent from "./pages/CreateEvent";
 
 function App() {
   const [eventsData, setEventsData] = useState([]);

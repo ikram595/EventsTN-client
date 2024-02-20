@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import api from "./api";
-import CreateEvent from "./CreateEvent";
 import EventItem from "./EventItem";
 import { BsPlusCircle } from "react-icons/bs";
 import { Link } from "react-router-dom";
