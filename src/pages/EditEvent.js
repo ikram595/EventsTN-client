@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import api from "../api";
 
-const CreateEvent = () => {
+const EditEvent = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const [formData, setFormData] = useState({
     nom: "",
@@ -14,29 +15,37 @@ const CreateEvent = () => {
     categorie: "",
   });
   const [errors, setErrors] = useState({});
+  useEffect(() => {
+    const fetchEventDetails = async () => {
+      try {
+        const response = await api.get(`get-event-by-id/${id}`);
+        setFormData(response.data);
+      } catch (error) {
+        console.error("Error fetching event details:", error);
+      }
+    };
 
-  const handleAddEvent = async (e) => {
+    fetchEventDetails();
+  }, [id]);
+
+  const handleEditEvent = async (e) => {
     e.preventDefault();
     //render client-side errors
     if (!validateInputs()) {
       return;
     }
-
     try {
-      const response = await api.post("create-event", formData);
-      console.log("API response:", response);
+      const response = await api.put(`edit-event/${id}`, formData);
+      //console.log("API response:", response);
       navigate("/");
     } catch (error) {
-      console.error("Error creating event:", error);
+      console.error("Error editing event:", error);
       if (error.response && error.response.status === 400) {
         setErrors(error.response.data.errors);
         console.log("Error response from server:", error.response.data.errors);
-      } else {
-        console.error("Error creating event:", error);
       }
     }
   };
-
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
@@ -93,44 +102,46 @@ const CreateEvent = () => {
   };
 
   return (
-    <form onSubmit={handleAddEvent} className="card border-0 mt-4 mb-4">
+    <form onSubmit={handleEditEvent} className="card border-0 mt-4 mb-4">
       <div className=" mt-4">
         <div className="row pb-2">
-          <h2 className="text-primary">Ajouter un nouvel événement</h2>
+          <h2 className="text-primary">Modifier un événement</h2>
           <hr />
         </div>
       </div>
-      {Object.keys(formData).map((field) => (
-        <div className="form-group mb-3 row">
-          <label className="control-label">{field}</label>
-          <input
-            id={field}
-            type="text"
-            value={formData[field]}
-            onChange={handleInputChange}
-            className={`form-control ${errors[field] ? "is-invalid" : ""}`}
-          />
-          {errors[field] && (
-            <div>
-              <ul>
-                {Array.isArray(errors[field]) ? (
-                  errors[field].map((error, index) => (
-                    <li key={index}>{error}</li>
-                  ))
-                ) : (
-                  <li className="text-danger">{errors[field]}</li>
-                )}
-              </ul>
-            </div>
-          )}
-        </div>
-      ))}
+      {Object.keys(formData)
+        .filter((field) => field !== "eventId") //exclude 'eventId'
+        .map((field) => (
+          <div className="form-group mb-3 row">
+            <label className="control-label">{field}</label>
+            <input
+              id={field}
+              type="text"
+              value={formData[field]}
+              onChange={handleInputChange}
+              className={`form-control ${errors[field] ? "is-invalid" : ""}`}
+            />
+            {errors[field] && (
+              <div>
+                <ul>
+                  {Array.isArray(errors[field]) ? (
+                    errors[field].map((error, index) => (
+                      <li key={index}>{error}</li>
+                    ))
+                  ) : (
+                    <li className="text-danger">{errors[field]}</li>
+                  )}
+                </ul>
+              </div>
+            )}
+          </div>
+        ))}
 
       <div className="row">
         <div className="form-group col-6 col-md-3">
           <input
             type="submit"
-            value="Ajouter"
+            value="Sauvgarder"
             className="btn btn-primary form-control"
           />
         </div>
@@ -144,4 +155,4 @@ const CreateEvent = () => {
   );
 };
 
-export default CreateEvent;
+export default EditEvent;

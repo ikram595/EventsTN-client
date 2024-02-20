@@ -2,10 +2,11 @@ import "./App.css";
 import React, { useEffect, useState } from "react";
 import api from "./api";
 import "bootswatch/dist/lux/bootstrap.min.css";
-import EventsList from "./components/EventsList";
+import EventsList from "./pages/EventsList";
 import EventDetails from "./pages/EventDetails";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import CreateEvent from "./pages/CreateEvent";
+import EditEvent from "./pages/EditEvent";
 
 function App() {
   const [eventsData, setEventsData] = useState([]);
@@ -39,6 +40,7 @@ function App() {
           <Route path="/" element={<EventsList />} />
           <Route path="/event-details/:id" element={<EventDetails />} />
           <Route path="/create-event" element={<CreateEvent />} />
+          <Route path="/edit-event/:id" element={<EditEvent />} />
         </Routes>
       </Router>
     </div>

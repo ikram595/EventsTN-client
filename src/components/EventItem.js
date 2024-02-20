@@ -39,9 +39,10 @@ const EventItem = ({
             <BsGeoAlt className="bi bi-geo-alt" /> {lieu}
           </p>
           <div className="m-2">tags</div>
-          <button type="button" className="btn btn-primary">
+
+          <Link to={`/edit-event/${eventId}`} className="btn btn-primary">
             <BsPencilSquare className="bi bi-pencil-square" />
-          </button>
+          </Link>
 
           <Link to={`/event-details/${eventId}`} className="btn btn-dark">
             <BsEye className="bi bi-eye" />
