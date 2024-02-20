@@ -17,6 +17,9 @@ const CreateEvent = () => {
 
   const handleAddEvent = async (e) => {
     e.preventDefault();
+    if (!validateInputs()) {
+      return;
+    }
 
     try {
       const response = await api.post("create-event", formData);
@@ -24,19 +27,67 @@ const CreateEvent = () => {
     } catch (error) {
       if (error.response && error.response.status === 400) {
         setErrors(error.response.data.errors);
-        console.log("Error response from server:", error.response.data.errors);
+        //console.log("Error response from server:", error.response.data.errors);
       } else {
         console.error("Error creating event:", error);
       }
     }
   };
 
-  // Event handler to update state as the user types
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
       [e.target.id]: e.target.value,
     });
+  };
+  //client-side inputs validation
+  const validateInputs = () => {
+    let newErrors = {};
+    //nom validation
+    if (!formData.nom) {
+      newErrors.nom = "Ce champ est obligatoire";
+    }
+    if (formData.nom.length < 3 || formData.nom.length > 100) {
+      newErrors.nom = "Le nom doit être entre 3 et 100 caractères";
+    }
+    //description validation
+    if (!formData.description) {
+      newErrors.description = "Ce champ est obligatoire";
+    }
+    if (formData.description.length < 10 || formData.description.length > 500) {
+      newErrors.description =
+        "Champ doit être de longueur comprise entre 10 et 500 caractères";
+    }
+    //date validation
+    if (!formData.jour) {
+      newErrors.jour = "Ce champ est obligatoire";
+    }
+    const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+    if (!dateRegex.test(formData.jour)) {
+      newErrors.jour =
+        "Format de date non valide. Utilisez le format jj/mm/aaaa.";
+    }
+    //temps validation
+    if (!formData.temps) {
+      newErrors.temps = "Ce champ est obligatoire";
+    }
+    const tempsRegex = /^\d{2}:\d{2}$/;
+    if (!tempsRegex.test(formData.temps)) {
+      newErrors.temps =
+        "Format de date non valide. Utilisez le format jj/mm/aaaa.";
+    }
+    //lieu validation
+    if (!formData.lieu) {
+      newErrors.lieu = "Ce champ est obligatoire";
+    }
+
+    if (formData.lieu.length < 3 || formData.lieu.length > 100) {
+      newErrors.lieu = "Lieu doit être entre 3 et 100 caractères";
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
   };
 
   return (
@@ -58,11 +109,15 @@ const CreateEvent = () => {
             className={`form-control ${errors[field] ? "is-invalid" : ""}`}
           />
           {errors[field] && (
-            <div className="invalid-feedback">
+            <div>
               <ul>
-                {errors[field].map((error, index) => (
-                  <li key={index}>{error}</li>
-                ))}
+                {Array.isArray(errors[field]) ? (
+                  errors[field].map((error, index) => (
+                    <li key={index}>{error}</li>
+                  ))
+                ) : (
+                  <li className="text-danger">{errors[field]}</li>
+                )}
               </ul>
             </div>
           )}
