@@ -47,10 +47,9 @@ const EventItem = ({
           <Link to={`/event-details/${eventId}`} className="btn btn-dark">
             <BsEye className="bi bi-eye" />
           </Link>
-
-          <button type="button" className="btn btn-danger">
+          <Link to={`/delete-event/${eventId}`} className="btn btn-danger">
             <BsTrash3 className="bi bi-trash" />
-          </button>
+          </Link>
 
           <button type="button" className="btn btn-success">
             Participer

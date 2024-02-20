@@ -7,6 +7,7 @@ import EventDetails from "./pages/EventDetails";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import CreateEvent from "./pages/CreateEvent";
 import EditEvent from "./pages/EditEvent";
+import DeleteEvent from "./pages/DeleteEvent";
 
 function App() {
   const [eventsData, setEventsData] = useState([]);
@@ -41,6 +42,7 @@ function App() {
           <Route path="/event-details/:id" element={<EventDetails />} />
           <Route path="/create-event" element={<CreateEvent />} />
           <Route path="/edit-event/:id" element={<EditEvent />} />
+          <Route path="/delete-event/:id" element={<DeleteEvent />} />
         </Routes>
       </Router>
     </div>
