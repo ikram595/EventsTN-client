@@ -1,9 +1,9 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
-import api from "./components/api";
+import api from "./api";
 import "bootswatch/dist/lux/bootstrap.min.css";
 import EventsList from "./components/EventsList";
-import EventDetails from "./components/EventDetails";
+import EventDetails from "./pages/EventDetails";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import CreateEvent from "./pages/CreateEvent";
 
