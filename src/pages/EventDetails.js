@@ -27,7 +27,7 @@ const EventDetails = () => {
       <div className="card-header bg-secondary bg-gradient  py-4">
         <div className="row">
           <div className="col-12 text-center">
-            <h3 className=" text-uppercase">{eventDetails.nom}</h3>
+            <h3 className=" text-uppercase">{eventDetails.name}</h3>
           </div>
         </div>
       </div>
@@ -37,20 +37,22 @@ const EventDetails = () => {
           <table className="table table-hover" style={{ maxWidth: " 40rem" }}>
             <thead>
               <tr>
-                <th scope="col">Jour</th>
-                <th scope="col">Temps</th>
+                <th scope="col">startDate</th>
+                <th scope="col">startTime</th>
                 <th scope="col">Lieu</th>
                 <th scope="col">Categorie</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td className="text-danger fw-bold">{eventDetails.jour}</td>
-                <td className="text-danger fw-bold">{eventDetails.temps}</td>
-                <td className="text-danger fw-bold">{eventDetails.lieu}</td>
                 <td className="text-danger fw-bold">
-                  {eventDetails.categorie}
+                  {eventDetails.startDate}
                 </td>
+                <td className="text-danger fw-bold">
+                  {eventDetails.startTime}
+                </td>
+                <td className="text-danger fw-bold">{eventDetails.location}</td>
+                <td className="text-danger fw-bold">{eventDetails.category}</td>
               </tr>
             </tbody>
           </table>

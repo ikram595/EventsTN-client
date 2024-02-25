@@ -7,12 +7,19 @@ const EditEvent = () => {
   const { id } = useParams();
 
   const [formData, setFormData] = useState({
-    nom: "",
+    name: "",
     description: "",
-    jour: "",
-    temps: "",
-    lieu: "",
-    categorie: "",
+    limit: "",
+    imgUrl: "",
+    startDate: "",
+    endDate: "",
+    startTime: "",
+    endTime: "",
+    location: "",
+    type: "",
+    status: "",
+    category: "",
+    properties: "",
   });
   const [errors, setErrors] = useState({});
   useEffect(() => {
@@ -56,11 +63,11 @@ const EditEvent = () => {
   const validateInputs = () => {
     let newErrors = {};
     //nom validation
-    if (formData.nom === "") {
-      newErrors.nom = "Ce champ est obligatoire";
+    if (formData.name === "") {
+      newErrors.name = "Ce champ est obligatoire";
     }
-    if (formData.nom.length < 3 || formData.nom.length > 100) {
-      newErrors.nom = "Le nom doit être entre 3 et 100 caractères";
+    if (formData.name.length < 3 || formData.name.length > 100) {
+      newErrors.name = "Le nom doit être entre 3 et 100 caractères";
     }
     //description validation
     if (formData.description === "") {
@@ -71,29 +78,30 @@ const EditEvent = () => {
         "Champ doit être de longueur comprise entre 10 et 500 caractères";
     }
     //date validation
-    if (formData.jour === "") {
-      newErrors.jour = "Ce champ est obligatoire";
+    if (formData.startDate === "") {
+      newErrors.startDate = "Ce champ est obligatoire";
     }
     const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
-    if (!dateRegex.test(formData.jour)) {
-      newErrors.jour =
+    if (!dateRegex.test(formData.startDate)) {
+      newErrors.startDate =
         "Format de date non valide. Utilisez le format jj/mm/aaaa.";
     }
     //temps validation
-    if (formData.temps === "") {
-      newErrors.temps = "Ce champ est obligatoire";
+    if (formData.startTime === "") {
+      newErrors.startTime = "Ce champ est obligatoire";
     }
-    const tempsRegex = /^\d{2}:\d{2}$/;
-    if (!tempsRegex.test(formData.temps)) {
-      newErrors.temps = "Format d'heure non valide. Utilisez le format HH:mm.";
+    const startTimeRegex = /^\d{2}:\d{2}$/;
+    if (!startTimeRegex.test(formData.startTime)) {
+      newErrors.startTime =
+        "Format d'heure non valide. Utilisez le format HH:mm.";
     }
     //lieu validation
-    if (formData.lieu === "") {
-      newErrors.lieu = "Ce champ est obligatoire";
+    if (formData.location === "") {
+      newErrors.location = "Ce champ est obligatoire";
     }
 
-    if (formData.lieu.length < 3 || formData.lieu.length > 100) {
-      newErrors.lieu = "Lieu doit être entre 3 et 100 caractères";
+    if (formData.location.length < 3 || formData.location.length > 100) {
+      newErrors.location = "location doit être entre 3 et 100 caractères";
     }
 
     setErrors(newErrors);

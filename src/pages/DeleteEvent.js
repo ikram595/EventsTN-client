@@ -7,14 +7,20 @@ const DeleteEvent = () => {
   const { id } = useParams();
 
   const [formData, setFormData] = useState({
-    nom: "",
+    name: "",
     description: "",
-    jour: "",
-    temps: "",
-    lieu: "",
-    categorie: "",
+    limit: "",
+    imgUrl: "",
+    startDate: "",
+    endDate: "",
+    startTime: "",
+    endTime: "",
+    location: "",
+    type: "",
+    status: "",
+    category: "",
+    properties: "",
   });
-  const [errors, setErrors] = useState({});
   useEffect(() => {
     const fetchEventDetails = async () => {
       try {
@@ -43,7 +49,7 @@ const DeleteEvent = () => {
       <h2>Delete Event</h2>
       {formData && (
         <div>
-          <p>Are you sure you want to delete the event "{formData.nom}"?</p>
+          <p>Are you sure you want to delete the event "{formData.name}"?</p>
           <button onClick={handleDeleteEvent} className="btn btn-danger">
             Delete
           </button>

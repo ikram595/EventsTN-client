@@ -11,32 +11,39 @@ import {
 import { Link } from "react-router-dom";
 const EventItem = ({
   eventId,
-  nom,
-  jour,
-  temps,
-  categorie,
+  name,
   description,
-  lieu,
+  limit,
+  imgUrl,
+  startDate,
+  endDate,
+  startTime,
+  endTime,
+  location,
+  type,
+  status,
+  category,
+  properties,
 }) => {
   return (
     <div>
       <div key={eventId} className="card" style={{ width: "20rem" }}>
         <div className="card-body">
-          <h5 className="card-title">{nom}</h5>
+          <h5 className="card-title">{name}</h5>
           <h6 className="card-subtitle mb-2 text-body-secondary text-secondary">
             <BsCalendarEvent className="bi bi-calendar-event text-secondary" />
-            {jour}
+            {startDate}-{endDate}
           </h6>
           <h6 className="card-subtitle mb-2 text-body-secondary text-secondary">
-            <BsClock className="bi bi-clock text-secondary" /> {temps}
+            <BsClock className="bi bi-clock text-secondary" /> {startTime}
           </h6>
           <h6 className="card-subtitle mb-2 text-body-secondary text-secondary">
             <BsBookmarks className="bi bi-bookmarks" />
-            {categorie}
+            {category}
           </h6>
           <p className="card-text description">{description}</p>
           <p className="card-text">
-            <BsGeoAlt className="bi bi-geo-alt" /> {lieu}
+            <BsGeoAlt className="bi bi-geo-alt" /> {location}
           </p>
           <div className="m-2">tags</div>
 

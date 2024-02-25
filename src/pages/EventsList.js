@@ -47,12 +47,19 @@ const EventsList = () => {
           <EventItem
             key={event.eventId}
             eventId={event.eventId}
-            nom={event.nom}
-            jour={event.jour}
-            temps={event.temps}
-            categorie={event.categorie}
+            name={event.name}
             description={event.description}
-            lieu={event.lieu}
+            limit={event.limit}
+            imgUrl={event.imgUrl}
+            startDate={event.startDate}
+            endDate={event.endDate}
+            startTime={event.startTime}
+            endTime={event.endTime}
+            location={event.location}
+            type={event.type}
+            status={event.status}
+            category={event.category}
+            properties={event.properties}
           />
         ))}
       </div>
