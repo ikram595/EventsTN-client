@@ -27,7 +27,6 @@ function App() {
         <Route path="/edit-event/:id" element={<EditEvent />} />
         <Route path="/delete-event/:id" element={<DeleteEvent />} />
       </Routes>
-      /
     </div>
   );
 }

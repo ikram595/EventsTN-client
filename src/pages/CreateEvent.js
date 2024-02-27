@@ -21,33 +21,13 @@ const CreateEvent = () => {
     properties: "",
   });
   const [errors, setErrors] = useState({});
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
 
-    if (type === "checkbox") {
-      // Handle checkboxes separately
-      const updatedTypes = checked
-        ? [...formData.types, value]
-        : formData.types.filter((type) => type !== value);
-
-      setFormData({
-        ...formData,
-        types: updatedTypes,
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
-    }
-  };
   const handleAddEvent = async (e) => {
     e.preventDefault();
     //render client-side errors
     if (!validateInputs()) {
       return;
     }
-
     try {
       const response = await api.post("create-event", formData);
       console.log("API response:", response);
@@ -64,54 +44,94 @@ const CreateEvent = () => {
   };
 
   const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.id]: e.target.value,
-    });
+    const { name, value, type, checked } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
   //client-side inputs validation
   const validateInputs = () => {
     let newErrors = {};
-    //nom validation
-    if (formData.name === "") {
+    //name validation
+
+    if (
+      formData.name === "" ||
+      formData.name.length < 3 ||
+      formData.name.length > 100
+    ) {
       newErrors.name = "Ce champ est obligatoire";
-    }
-    if (formData.name.length < 3 || formData.name.length > 100) {
       newErrors.name = "Le nom doit être entre 3 et 100 caractères";
     }
     //description validation
-    if (formData.description === "") {
-      newErrors.description = "Ce champ est obligatoire";
-    }
-    if (formData.description.length < 10 || formData.description.length > 500) {
+    if (
+      formData.description === "" ||
+      formData.description.length < 10 ||
+      formData.description.length > 500
+    ) {
       newErrors.description =
         "Champ doit être de longueur comprise entre 10 et 500 caractères";
+    } //limit validation
+    if (formData.limit > 10000) {
+      newErrors.limit = "limit doit être <10000";
+    }
+    //imgurl validation
+    const urlPattern = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?$/;
+    if (formData.imgUrl === "" || !urlPattern.test(formData.imgUrl)) {
+      newErrors.imgUrl = "Ce champ est obligatoire";
+      newErrors.imgUrl = "URL non valide. Utilisez un autre URL";
     }
     //date validation
-    if (formData.startDate === "") {
-      newErrors.startDate = "Ce champ est obligatoire";
-    }
     const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
-    if (!dateRegex.test(formData.startDate)) {
+    if (formData.startDate === "" || !dateRegex.test(formData.startDate)) {
+      newErrors.startDate = "Ce champ est obligatoire";
       newErrors.startDate =
         "Format de date non valide. Utilisez le format jj/mm/aaaa.";
     }
     //temps validation
-    if (formData.startTime === "") {
-      newErrors.startTime = "Ce champ est obligatoire";
-    }
     const startTimeRegex = /^\d{2}:\d{2}$/;
-    if (!startTimeRegex.test(formData.startTime)) {
+    if (formData.startTime === "" || !startTimeRegex.test(formData.startTime)) {
+      newErrors.startTime = "Ce champ est obligatoire";
       newErrors.startTime =
         "Format d'heure non valide. Utilisez le format HH:mm.";
     }
-    //lieu validation
-    if (formData.location === "") {
-      newErrors.location = "Ce champ est obligatoire";
+    //date validation
+    const endDateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+    if (formData.endDate === "" || !endDateRegex.test(formData.endDate)) {
+      newErrors.endDate = "Ce champ est obligatoire";
+      newErrors.endDate =
+        "Format de date non valide. Utilisez le format jj/mm/aaaa.";
     }
-
-    if (formData.location.length < 3 || formData.location.length > 100) {
+    //temps validation
+    const endTimeRegex = /^\d{2}:\d{2}$/;
+    if (formData.endTime === "" || !endTimeRegex.test(formData.endTime)) {
+      newErrors.endTime = "Ce champ est obligatoire";
+      newErrors.endTime =
+        "Format d'heure non valide. Utilisez le format HH:mm.";
+    }
+    //location validation
+    if (
+      formData.location === "" ||
+      formData.location.length < 3 ||
+      formData.location.length > 100
+    ) {
       newErrors.location = "location doit être entre 3 et 100 caractères";
+    }
+    // type validation
+    if (!formData.type) {
+      newErrors.type = "Choisissez un type d'événement.";
+    }
+    // category validation
+    if (!formData.category) {
+      newErrors.category = "Choisissez une catégorie d'événement.";
+    }
+    // status validation
+    if (!formData.status) {
+      newErrors.status = "Choisissez un statut d'événement.";
+    }
+    // properties validation
+    if (!formData.properties) {
+      newErrors.properties = "Choisissez  une propriété d'événement.";
     }
 
     setErrors(newErrors);
@@ -127,117 +147,157 @@ const CreateEvent = () => {
           <hr />
         </div>
       </div>
-      <div>
-        <label>name</label>
+      <div className="form-group  ">
+        <label className="form-label mt-4">name</label>
         <input
-          id="name"
+          name="name"
           type="text"
           value={formData.name}
           onChange={handleInputChange}
+          className="form-control"
         />
+        {errors.name && <p className="form-text text-danger">{errors.name}</p>}
       </div>
-      <div>
-        <label>description</label>
-        <input
-          id="description"
+      <div className="form-group  ">
+        <label className="form-label mt-4">description</label>
+        <textarea
+          name="description"
           type="text"
           value={formData.description}
           onChange={handleInputChange}
+          className="form-control"
+          rows="3"
+          style={{ height: "93px" }}
         />
+        {errors.description && (
+          <p className="form-text text-danger">{errors.description}</p>
+        )}
       </div>
-      <div>
-        <label>limit</label>
+      <div className="form-group  ">
+        <label className="form-label mt-4">limit</label>
         <input
-          id="limit"
+          name="limit"
           type="text"
           value={formData.limit}
           onChange={handleInputChange}
+          className="form-control"
         />
+        {errors.limit && (
+          <p className="form-text text-danger">{errors.limit}</p>
+        )}
       </div>
-      <div>
-        <label>imgUrl</label>
+      <div className="form-group  ">
+        <label className="form-label mt-4">imgUrl</label>
         <input
-          id="imgUrl"
+          name="imgUrl"
           type="text"
           value={formData.imgUrl}
           onChange={handleInputChange}
+          className="form-control"
         />
+        {errors.imgUrl && (
+          <p className="form-text text-danger">{errors.imgUrl}</p>
+        )}
       </div>
-      <div>
-        <label>startDate</label>
+      <div className="form-group  ">
+        <label className="form-label mt-4">startDate</label>
         <input
-          id="startDate"
-          type="text"
+          name="startDate"
+          type="date"
           value={formData.startDate}
           onChange={handleInputChange}
+          className="form-control"
         />
+        {errors.startDate && (
+          <p className="form-text text-danger">{errors.startDate}</p>
+        )}
       </div>
-      <div>
-        <label>endDate</label>
+      <div className="form-group  ">
+        <label className="form-label mt-4">endDate</label>
         <input
-          id="endDate"
-          type="text"
+          name="endDate"
+          type="date"
           value={formData.endDate}
           onChange={handleInputChange}
+          className="form-control"
         />
+        {errors.endDate && (
+          <p className="form-text text-danger">{errors.endDate}</p>
+        )}
       </div>
-      <div>
-        <label>startTime</label>
+      <div className="form-group  ">
+        <label className="form-label mt-4">startTime</label>
         <input
-          id="startTime"
-          type="text"
+          name="startTime"
+          type="time"
           value={formData.startTime}
           onChange={handleInputChange}
+          className="form-control"
         />
+        {errors.startTime && (
+          <p className="form-text text-danger">{errors.startTime}</p>
+        )}
       </div>
-      <div>
-        <label>endTime</label>
+      <div className="form-group  ">
+        <label className="form-label mt-4">endTime</label>
         <input
-          id="endTime"
-          type="text"
+          name="endTime"
+          type="time"
           value={formData.endTime}
           onChange={handleInputChange}
+          className="form-control"
         />
+        {errors.endTime && (
+          <p className="form-text text-danger">{errors.endTime}</p>
+        )}
       </div>
-      <div>
-        <label>location</label>
+      <div className="form-group  ">
+        <label className="form-label mt-4">location</label>
         <input
-          id="location"
+          name="location"
           type="text"
           value={formData.location}
           onChange={handleInputChange}
+          className="form-control"
         />
+        {errors.location && (
+          <p className="form-text text-danger">{errors.location}</p>
+        )}
       </div>
-      <div>
-        <label>
+      <div className="form-group">
+        <label className="form-check">
           {" "}
           In Person
           <input
-            id="types"
-            type="checkbox"
+            name="inperson"
+            type="radio"
             value="In Person"
-            checked={formData.type.includes("InPerson")}
-            onChange={handleChange}
+            checked={formData.type === "InPerson"}
+            onChange={handleInputChange}
+            className="form-check-input"
           />
         </label>
-        <label>
+        <label className="form-check">
           Online
           <input
-            type="checkbox"
-            name="types"
+            type="radio"
+            name="online"
             value="Online"
-            checked={formData.type.includes("Online")}
-            onChange={handleChange}
+            checked={formData.type === "Online"}
+            onChange={handleInputChange}
+            className="form-check-input"
           />
         </label>
+        {errors.type && <p className="form-text text-danger">{errors.type}</p>}
       </div>
-      <div>
-        <label>
+      <div className="form-group">
+        <label className="form-label mt-4">
           Category:
           <select
             name="category"
             value={formData.category}
-            onChange={handleChange}
+            onChange={handleInputChange}
+            className="form-select"
           >
             <option value="Education">Education</option>
             <option value="SocialImpact">Social Impact</option>
@@ -245,15 +305,19 @@ const CreateEvent = () => {
             <option value="Entertainment">Entertainment</option>
             <option value="Other">Other</option>
           </select>
+          {errors.category && (
+            <p className="form-text text-danger">{errors.category}</p>
+          )}
         </label>
       </div>
-      <div>
-        <label>
+      <div className="form-group">
+        <label className="form-label mt-4">
           Properties:
           <select
             name="properties"
             value={formData.properties}
-            onChange={handleChange}
+            onChange={handleInputChange}
+            className="form-select"
           >
             <option value="Training">Training</option>
             <option value="Hackathon">Hackathon</option>
@@ -263,21 +327,32 @@ const CreateEvent = () => {
             <option value="Seminar">Seminar</option>
             <option value="Talk">Talk</option>
           </select>
+          {errors.properties && (
+            <p className="form-text text-danger">{errors.properties}</p>
+          )}
         </label>
       </div>
-      <div>
-        <label>
+      <div className="form-group">
+        <label className="form-label mt-4">
           Status:
-          <select name="status" value={formData.status} onChange={handleChange}>
+          <select
+            name="status"
+            value={formData.status}
+            onChange={handleInputChange}
+            className="form-select"
+          >
             <option value="Drafted">Drafted</option>
             <option value="Published">Published</option>
             <option value="Cancelled">Cancelled</option>
           </select>
+          {errors.status && (
+            <p className="form-text text-danger">{errors.status}</p>
+          )}
         </label>
       </div>
 
       <div className="row">
-        <div className="form-group col-6 col-md-3">
+        <div className=" col-6 col-md-3">
           <input
             type="submit"
             value="Ajouter"
