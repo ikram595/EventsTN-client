@@ -16,12 +16,31 @@ const CreateEvent = () => {
     endTime: "",
     location: "",
     type: "",
-    status: "",
+    status: "Drafted",
     category: "",
     properties: "",
   });
   const [errors, setErrors] = useState({});
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
 
+    if (type === "checkbox") {
+      // Handle checkboxes separately
+      const updatedTypes = checked
+        ? [...formData.types, value]
+        : formData.types.filter((type) => type !== value);
+
+      setFormData({
+        ...formData,
+        types: updatedTypes,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
+  };
   const handleAddEvent = async (e) => {
     e.preventDefault();
     //render client-side errors
@@ -101,38 +120,161 @@ const CreateEvent = () => {
   };
 
   return (
-    <form onSubmit={handleAddEvent} className="card border-0 mt-4 mb-4">
-      <div className=" mt-4">
-        <div className="row pb-2">
-          <h2 className="text-primary">Ajouter un nouvel événement</h2>
+    <form onSubmit={handleAddEvent}>
+      <div>
+        <div>
+          <h2>Ajouter un nouvel événement</h2>
           <hr />
         </div>
       </div>
-      {Object.keys(formData).map((field) => (
-        <div className="form-group mb-3 row">
-          <label className="control-label">{field}</label>
+      <div>
+        <label>name</label>
+        <input
+          id="name"
+          type="text"
+          value={formData.name}
+          onChange={handleInputChange}
+        />
+      </div>
+      <div>
+        <label>description</label>
+        <input
+          id="description"
+          type="text"
+          value={formData.description}
+          onChange={handleInputChange}
+        />
+      </div>
+      <div>
+        <label>limit</label>
+        <input
+          id="limit"
+          type="text"
+          value={formData.limit}
+          onChange={handleInputChange}
+        />
+      </div>
+      <div>
+        <label>imgUrl</label>
+        <input
+          id="imgUrl"
+          type="text"
+          value={formData.imgUrl}
+          onChange={handleInputChange}
+        />
+      </div>
+      <div>
+        <label>startDate</label>
+        <input
+          id="startDate"
+          type="text"
+          value={formData.startDate}
+          onChange={handleInputChange}
+        />
+      </div>
+      <div>
+        <label>endDate</label>
+        <input
+          id="endDate"
+          type="text"
+          value={formData.endDate}
+          onChange={handleInputChange}
+        />
+      </div>
+      <div>
+        <label>startTime</label>
+        <input
+          id="startTime"
+          type="text"
+          value={formData.startTime}
+          onChange={handleInputChange}
+        />
+      </div>
+      <div>
+        <label>endTime</label>
+        <input
+          id="endTime"
+          type="text"
+          value={formData.endTime}
+          onChange={handleInputChange}
+        />
+      </div>
+      <div>
+        <label>location</label>
+        <input
+          id="location"
+          type="text"
+          value={formData.location}
+          onChange={handleInputChange}
+        />
+      </div>
+      <div>
+        <label>
+          {" "}
+          In Person
           <input
-            id={field}
-            type="text"
-            value={formData[field]}
-            onChange={handleInputChange}
-            className={`form-control ${errors[field] ? "is-invalid" : ""}`}
+            id="types"
+            type="checkbox"
+            value="In Person"
+            checked={formData.type.includes("InPerson")}
+            onChange={handleChange}
           />
-          {errors[field] && (
-            <div>
-              <ul>
-                {Array.isArray(errors[field]) ? (
-                  errors[field].map((error, index) => (
-                    <li key={index}>{error}</li>
-                  ))
-                ) : (
-                  <li className="text-danger">{errors[field]}</li>
-                )}
-              </ul>
-            </div>
-          )}
-        </div>
-      ))}
+        </label>
+        <label>
+          Online
+          <input
+            type="checkbox"
+            name="types"
+            value="Online"
+            checked={formData.type.includes("Online")}
+            onChange={handleChange}
+          />
+        </label>
+      </div>
+      <div>
+        <label>
+          Category:
+          <select
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
+          >
+            <option value="Education">Education</option>
+            <option value="SocialImpact">Social Impact</option>
+            <option value="Tech">Tech</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Other">Other</option>
+          </select>
+        </label>
+      </div>
+      <div>
+        <label>
+          Properties:
+          <select
+            name="properties"
+            value={formData.properties}
+            onChange={handleChange}
+          >
+            <option value="Training">Training</option>
+            <option value="Hackathon">Hackathon</option>
+            <option value="Workshop">Workshop</option>
+            <option value="Conference">Conference</option>
+            <option value="Meetup">Meetup</option>
+            <option value="Seminar">Seminar</option>
+            <option value="Talk">Talk</option>
+          </select>
+        </label>
+      </div>
+      <div>
+        <label>
+          Status:
+          <select name="status" value={formData.status} onChange={handleChange}>
+            <option value="Drafted">Drafted</option>
+            <option value="Published">Published</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </label>
+      </div>
 
       <div className="row">
         <div className="form-group col-6 col-md-3">

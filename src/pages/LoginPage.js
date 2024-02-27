@@ -3,8 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const LoginPage = () => {
-  const [formData, setFormData] = useState({ email: "", password: "" });
   const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({ email: "", password: "" });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,19 +19,15 @@ const LoginPage = () => {
         "https://localhost:7233/api/account/login",
         formData
       );
-
-      // Assuming your API returns a token upon successful login
       const token = response.data.token;
-
-      // Store the token in localStorage or a state management solution
       localStorage.setItem("token", token);
-      console.log(localStorage.getItem("token"));
-
-      // Redirect to the desired page after successful login
-      navigate("/create-event");
+      axios.defaults.headers.common["Authorization"] = token;
+      console.log("login successful");
+      //console.log("response data=" + response.data);
+      navigate("/");
     } catch (error) {
-      // Handle login failure, show error message, etc.
       console.error("Error logging in:", error.response.data);
+      console.log("login unsuccessful");
     }
   };
   return (

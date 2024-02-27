@@ -1,27 +1,45 @@
 import React, { useState, useEffect } from "react";
 import api from "../api";
-import { Link, useParams } from "react-router-dom";
-
+import { Link, useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
+import LoginPage from "./LoginPage";
 const EventDetails = () => {
   const { id } = useParams();
   const [eventDetails, setEventDetails] = useState(null);
+  const [authenticated, setAuthenticated] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchEventDetails = async () => {
+      const token = localStorage.getItem("token");
+      console.log(token);
+      if (!token) {
+        console.log("token is empty=>user not authenticated");
+        navigate("/login");
+        return;
+      }
+      console.log("token is not empty=>get event by id");
+      axios.defaults.headers.common["Authorization"] = token;
+
       try {
+        setAuthenticated(true);
         const response = await api.get(`get-event-by-id/${id}`);
         setEventDetails(response.data);
       } catch (error) {
         console.error("Error fetching event details:", error);
+        setAuthenticated(false);
       }
     };
 
     fetchEventDetails();
-  }, [id]);
-
+  }, [id, navigate]);
+  if (!authenticated) {
+    return <LoginPage />;
+  }
   if (!eventDetails) {
     return <div>Loading event details...</div>;
   }
+
   return (
     <div className="card shadow border-0 mt-4 mb-4">
       <div className="card-header bg-secondary bg-gradient  py-4">
