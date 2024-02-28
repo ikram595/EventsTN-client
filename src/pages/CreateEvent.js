@@ -148,7 +148,7 @@ const CreateEvent = () => {
         </div>
       </div>
       <div className="form-group  ">
-        <label className="form-label mt-4">name</label>
+        <label className="form-label">name</label>
         <input
           name="name"
           type="text"
@@ -159,7 +159,7 @@ const CreateEvent = () => {
         {errors.name && <p className="form-text text-danger">{errors.name}</p>}
       </div>
       <div className="form-group  ">
-        <label className="form-label mt-4">description</label>
+        <label className="form-label">description</label>
         <textarea
           name="description"
           type="text"
@@ -173,86 +173,66 @@ const CreateEvent = () => {
           <p className="form-text text-danger">{errors.description}</p>
         )}
       </div>
-      <div className="form-group  ">
-        <label className="form-label mt-4">limit</label>
-        <input
-          name="limit"
-          type="text"
-          value={formData.limit}
-          onChange={handleInputChange}
-          className="form-control"
-        />
-        {errors.limit && (
-          <p className="form-text text-danger">{errors.limit}</p>
-        )}
+      <div className="row">
+        {" "}
+        <div className="form-group col">
+          <label className="form-label">startDate</label>
+          <input
+            name="startDate"
+            type="date"
+            value={formData.startDate}
+            onChange={handleInputChange}
+            className="form-control"
+          />
+          {errors.startDate && (
+            <p className="form-text text-danger">{errors.startDate}</p>
+          )}
+        </div>
+        <div className="form-group  col ">
+          <label className="form-label">endDate</label>
+          <input
+            name="endDate"
+            type="date"
+            value={formData.endDate}
+            onChange={handleInputChange}
+            className="form-control"
+          />
+          {errors.endDate && (
+            <p className="form-text text-danger">{errors.endDate}</p>
+          )}
+        </div>
+      </div>
+      <div className="row">
+        {" "}
+        <div className="form-group col ">
+          <label className="form-label">startTime</label>
+          <input
+            name="startTime"
+            type="time"
+            value={formData.startTime}
+            onChange={handleInputChange}
+            className="form-control"
+          />
+          {errors.startTime && (
+            <p className="form-text text-danger">{errors.startTime}</p>
+          )}
+        </div>
+        <div className="form-group col ">
+          <label className="form-label">endTime</label>
+          <input
+            name="endTime"
+            type="time"
+            value={formData.endTime}
+            onChange={handleInputChange}
+            className="form-control"
+          />
+          {errors.endTime && (
+            <p className="form-text text-danger">{errors.endTime}</p>
+          )}
+        </div>
       </div>
       <div className="form-group  ">
-        <label className="form-label mt-4">imgUrl</label>
-        <input
-          name="imgUrl"
-          type="text"
-          value={formData.imgUrl}
-          onChange={handleInputChange}
-          className="form-control"
-        />
-        {errors.imgUrl && (
-          <p className="form-text text-danger">{errors.imgUrl}</p>
-        )}
-      </div>
-      <div className="form-group  ">
-        <label className="form-label mt-4">startDate</label>
-        <input
-          name="startDate"
-          type="date"
-          value={formData.startDate}
-          onChange={handleInputChange}
-          className="form-control"
-        />
-        {errors.startDate && (
-          <p className="form-text text-danger">{errors.startDate}</p>
-        )}
-      </div>
-      <div className="form-group  ">
-        <label className="form-label mt-4">endDate</label>
-        <input
-          name="endDate"
-          type="date"
-          value={formData.endDate}
-          onChange={handleInputChange}
-          className="form-control"
-        />
-        {errors.endDate && (
-          <p className="form-text text-danger">{errors.endDate}</p>
-        )}
-      </div>
-      <div className="form-group  ">
-        <label className="form-label mt-4">startTime</label>
-        <input
-          name="startTime"
-          type="time"
-          value={formData.startTime}
-          onChange={handleInputChange}
-          className="form-control"
-        />
-        {errors.startTime && (
-          <p className="form-text text-danger">{errors.startTime}</p>
-        )}
-      </div>
-      <div className="form-group  ">
-        <label className="form-label mt-4">endTime</label>
-        <input
-          name="endTime"
-          type="time"
-          value={formData.endTime}
-          onChange={handleInputChange}
-          className="form-control"
-        />
-        {errors.endTime && (
-          <p className="form-text text-danger">{errors.endTime}</p>
-        )}
-      </div>
-      <div className="form-group  ">
-        <label className="form-label mt-4">location</label>
+        <label className="form-label">location</label>
         <input
           name="location"
           type="text"
@@ -264,7 +244,8 @@ const CreateEvent = () => {
           <p className="form-text text-danger">{errors.location}</p>
         )}
       </div>
-      <div className="form-group">
+
+      <div className="form-group mt-4">
         <label className="form-check">
           {" "}
           In Person
@@ -288,11 +269,27 @@ const CreateEvent = () => {
             className="form-check-input"
           />
         </label>
+
         {errors.type && <p className="form-text text-danger">{errors.type}</p>}
       </div>
-      <div className="form-group">
-        <label className="form-label mt-4">
-          Category:
+      <div className="form-group  ">
+        <label className="form-label">limit</label>
+        <input
+          name="limit"
+          type="text"
+          value={formData.limit}
+          onChange={handleInputChange}
+          className="form-control"
+        />
+        {errors.limit && (
+          <p className="form-text text-danger">{errors.limit}</p>
+        )}
+      </div>
+
+      <div className="row">
+        {" "}
+        <div className="form-group col">
+          <label className="form-label">Category:</label>
           <select
             name="category"
             value={formData.category}
@@ -308,11 +305,9 @@ const CreateEvent = () => {
           {errors.category && (
             <p className="form-text text-danger">{errors.category}</p>
           )}
-        </label>
-      </div>
-      <div className="form-group">
-        <label className="form-label mt-4">
-          Properties:
+        </div>
+        <div className="form-group col">
+          <label className="form-label">Properties:</label>
           <select
             name="properties"
             value={formData.properties}
@@ -330,36 +325,30 @@ const CreateEvent = () => {
           {errors.properties && (
             <p className="form-text text-danger">{errors.properties}</p>
           )}
-        </label>
+        </div>
       </div>
-      <div className="form-group">
-        <label className="form-label mt-4">
-          Status:
-          <select
-            name="status"
-            value={formData.status}
-            onChange={handleInputChange}
-            className="form-select"
-          >
-            <option value="Drafted">Drafted</option>
-            <option value="Published">Published</option>
-            <option value="Cancelled">Cancelled</option>
-          </select>
-          {errors.status && (
-            <p className="form-text text-danger">{errors.status}</p>
-          )}
-        </label>
+      <div className="form-group  ">
+        <label className="form-label">imgUrl</label>
+        <input
+          name="imgUrl"
+          type="text"
+          value={formData.imgUrl}
+          onChange={handleInputChange}
+          className="form-control"
+        />
+        {errors.imgUrl && (
+          <p className="form-text text-danger">{errors.imgUrl}</p>
+        )}
       </div>
-
-      <div className="row">
-        <div className=" col-6 col-md-3">
+      <div className="row mt-4">
+        <div className="form-group col-6 col-md-3">
           <input
             type="submit"
             value="Ajouter"
             className="btn btn-primary form-control"
           />
         </div>
-        <div className="col-6 col-md-3">
+        <div className="form-group col-6 col-md-3">
           <Link to={`/`} className="btn btn-outline-secondary form-control">
             Annuler
           </Link>
