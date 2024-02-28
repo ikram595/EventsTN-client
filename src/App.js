@@ -14,19 +14,22 @@ import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
-    <div className="container">
+    <div>
       <Navbar />
-      <Toaster position="buttom-right" toastOptions={{ duration: 3000 }} />
-      <Routes>
-        <Route path="/" element={<EventsList />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        {/*authenticated routes */}
-        <Route path="/event-details/:id" element={<EventDetails />} />
-        <Route path="/create-event" element={<CreateEvent />} />
-        <Route path="/edit-event/:id" element={<EditEvent />} />
-        <Route path="/delete-event/:id" element={<DeleteEvent />} />
-      </Routes>
+
+      <div className="container pb-3 mt-2">
+        <Toaster position="buttom-right" toastOptions={{ duration: 3000 }} />
+        <Routes>
+          <Route path="/" element={<EventsList />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          {/*authenticated routes */}
+          <Route path="/event-details/:id" element={<EventDetails />} />
+          <Route path="/create-event" element={<CreateEvent />} />
+          <Route path="/edit-event/:id" element={<EditEvent />} />
+          <Route path="/delete-event/:id" element={<DeleteEvent />} />
+        </Routes>
+      </div>
     </div>
   );
 }

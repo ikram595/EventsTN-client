@@ -140,14 +140,15 @@ const CreateEvent = () => {
   };
 
   return (
-    <form onSubmit={handleAddEvent}>
-      <div>
-        <div>
-          <h2>Ajouter un nouvel événement</h2>
-          <hr />
-        </div>
+    <form
+      onSubmit={handleAddEvent}
+      className="col-6 d-flex flex-column mx-auto"
+    >
+      <div className="row pt-4 pb-3">
+        <h2 className="text-primary">Ajouter un nouvel événement</h2>
+        <hr />
       </div>
-      <div className="form-group  ">
+      <div className="form-group ">
         <label className="form-label">name</label>
         <input
           name="name"
